@@ -13,7 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+      env:
+        packageName: ${{ nugetorgPackageName }}
+        
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -24,5 +26,9 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Publish
+      run: > 
+        dotnet nuget push Kaltura.Client.Library.08.28.22.001.Test.1.0.0.nupkg
+        --api-key ${{ NUGET_ORG_API }} --source https://api.nuget.org/v3/index.json
     # - name: Test
     #  run: dotnet test --no-build --verbosity normal
